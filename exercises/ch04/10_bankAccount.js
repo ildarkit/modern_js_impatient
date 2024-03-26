@@ -36,3 +36,11 @@ class CheckingAccount extends BankAccount {
         }
     }
 }
+
+let saving = new SavingsAccount(100, 10);
+saving.addInterest();
+console.log(saving.balance);
+
+let checking = new CheckingAccount(100);
+checking.withdraw(20, 1);
+console.log(checking.balance);
