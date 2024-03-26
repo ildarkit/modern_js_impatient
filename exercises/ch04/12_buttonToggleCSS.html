@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Button toggle</title>
+    </head>
+    <body>
+        <style>
+            #button1.clicked {
+                color:fuchsia;
+            }
+        </style>
+        <button id="button1">Toggle Color</button>
+        <script>
+            const button = document.getElementById('button1');
+            button.addEventListener('click', () => {
+                button.classList.toggle('clicked');
+            });
+        </script>
+    </body>
+</html>
