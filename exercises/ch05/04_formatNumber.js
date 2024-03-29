@@ -15,7 +15,7 @@ function format(num, fmtStr) {
     let numStr;
 
     cfg.flags = flags;
-    if (cfg.format == 's')
+    if (cfg.format === 's')
         numStr = fmtString(num, cfg);
     else
         numStr = fmtNumber(num, cfg);
@@ -53,32 +53,39 @@ function fmtString(num, cfg) {
 
 function fmtNumber(num, cfg, altSystemForm = ALT_SYSTEM_FORM) {
     let result = num.toPrecision(cfg.precise);
-    let parseFunc = isInt(num) ? parseInt: parseFloat;
 
-    result = toNumberSystem(parseFunc, result, cfg.numberSystem);
-    if (cfg.format == 'f' || cfg.format == 'd') {
-        if (cfg.flags.includes('+') && num > 0)
-            result = '+' + result;
-    } else {
-        if (cfg.flags.includes('#')) {
-            let originLength = result.length;
-            result = altSystemForm[cfg.numberSystem] + result;
-            cfg.width += result.length - originLength;
-        }
+    if (cfg.numberSystem !== undefined) {
+        let parseFunc = isInt(num) ? parseInt: parseFloat;
+        result = toNumberSystem(parseFunc, result, cfg.numberSystem);
+    }
+    if ((cfg.format === 'f' || cfg.format === 'd') &&
+        (cfg.flags.includes('+') && num > 0))
+        result = '+' + result;
+    else if (cfg.flags.includes('#')) {
+        let originLength = result.length;
+        result = altSystemForm[cfg.numberSystem] + result;
+        cfg.width += result.length - originLength;
     }
     return result;
 }
 
 function fillString(numStr, cfg) {
-    if (cfg.precise === undefined) {
-        let filler = ' ';
-        if (cfg.flags.includes('0')) filler = '0';
-        let filled = new Array(cfg.width - numStr.length).fill(filler);
-        if (cfg.flags.includes('-'))
-            numStr = numStr + filled.join('');
-        else
-            numStr = filled.join('') + numStr;               
-    } 
+    let filler = ' ';
+    if (cfg.precise === undefined && !cfg.flags.includes('-')
+        && cfg.flags.includes('0')) {
+        filler = '0';
+    }
+    if (cfg.flags.includes(' ') &&
+        !(numStr.charAt(0) === '-' || numStr.charAt(0) === '+')) {
+        filler = ' ';
+    }
+    let filled = new Array(cfg.width - numStr.length).fill(filler);
+    if (cfg.flags.includes('-'))
+        numStr = numStr + filled.join('');
+    else if (numStr.charAt(0) === '-' || numStr.charAt(0) === '+')
+        numStr = numStr.charAt(0) + filled.join('') + numStr.slice(1);
+    else 
+        numStr = filled.join('') + numStr;          
     return numStr;
 }
 
@@ -86,13 +93,14 @@ function isInt(n) {
     return n % 1 === 0;
 }
 
-console.log(format(12.1234, '%07.5f'));
+console.log(format(12.1234, '% 7.5f'));
 console.log(format(12.1234, '%.4s'));
-console.log(format(42.3456, '%04x'));
+console.log(format(42, '%04x'));
 console.log(format(12, '%04o'));
 console.log(format(42.3456, '%#4.3x'));
 console.log(format(12, '%04d'));
-console.log(format(2.02345, '%05.3f'));
-console.log(format(-2.02345, '%05.3f'));
-console.log(format(2.02345, '%+05.3f'));
-console.log(format(2.02345, '%-05.3f'));
+console.log(format(2.02, '%05f'));
+console.log(format(-2.3, '%05f'));
+console.log(format(2.02, '%+07f'));
+console.log(format(2.02, '%-05f'));
+console.log(format(2.02, '%- 7f'));
