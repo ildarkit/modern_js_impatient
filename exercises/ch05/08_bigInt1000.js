@@ -1,0 +1,1 @@
+console.log(BigInt(new Array(1000).fill('3').join('')));
