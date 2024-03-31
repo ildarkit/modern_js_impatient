@@ -21,6 +21,8 @@ function exponent(num) {
 	return exp; 
 } 
 
+console.log(exponent(2.3e-6));
+console.log(exponent(1.5e7));
 console.log(exponent(-0.32));
 console.log(exponent(0.9));
 console.log(exponent(-9.09));
