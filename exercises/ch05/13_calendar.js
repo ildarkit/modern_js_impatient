@@ -45,3 +45,4 @@ console.log(calendar(2, 2023));
 console.log(calendar(2, 2024));
 console.log(calendar(5, 2024));
 console.log(calendar(1, 2000));
+console.log(calendar(1, 2000, 'en-US'));
