@@ -1,5 +1,5 @@
 function deltaYears(date1, date2) {
-    let yearsCounter = 0;
+    let years = 0;
     let days = Math.trunc(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
     let year1 = date1.getFullYear();
     let year2 = date2.getFullYear();
@@ -9,15 +9,15 @@ function deltaYears(date1, date2) {
     for (let i = 1; startYear + i < endYear; i++) {
         if (leapYear(startYear + i)) days -= 366;
         else days -= 365;
-        yearsCounter++;
+        years++;
     }
     while (days >= 365) {
         days -= 365;
-        yearsCounter++; 
+        years++; 
     }
     if (days == 0 && (leapYear(startYear) || leapYear(endYear)))
-        yearsCounter--;
-    return {years: yearsCounter, days};
+        years--;
+    return {years, days};
 }
 
 function leapYear(year) {
