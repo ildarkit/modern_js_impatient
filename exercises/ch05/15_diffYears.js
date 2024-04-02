@@ -4,24 +4,32 @@ function deltaYears(date1, date2) {
     let year1 = date1.getFullYear();
     let year2 = date2.getFullYear();
 
-    let [startYear, endYear] = year1 > year2 ? [year2, year1]: [year1, year2];
+    let yearsRange = year1 > year2 ? [year2, year1]: [year1, year2];
 
-    for (let i = 1; startYear + i < endYear; i++) {
-        if (leapYear(startYear + i)) days -= 366;
-        else days -= 365;
+    for (let i = 1; yearsRange[0] + i < yearsRange[1]; i++) {
+        days = minusYearFromDays(yearsRange[0] + i, days);
         years++;
     }
-    while (days >= 365) {
-        days -= 365;
-        years++; 
-    }
-    if (days == 0 && (leapYear(startYear) || leapYear(endYear)))
-        years--;
+    for (let i = 0; i < 2; i++) {
+        let restDays = minusYearFromDays(yearsRange[i], days);
+        if (restDays < days) {
+            days = restDays;
+            years++;
+        }
+    } 
     return {years, days};
 }
 
 function leapYear(year) {
     return (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0));
+}
+
+function minusYearFromDays(year, days) {
+    if (leapYear(year)) {
+        if (days > 365) days -= 366;
+    }
+    else if (days > 364) days -= 365;
+    return days;
 }
 
 console.log(deltaYears(
