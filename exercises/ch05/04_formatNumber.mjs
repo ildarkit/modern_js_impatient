@@ -7,7 +7,7 @@ const ALT_SYSTEM_FORM = {
     8: '0o',
 };
 
-function format(num, fmtStr) {
+export function format(num, fmtStr) {
     let groups = fmtGroups(fmtStr);
     let flags = groups.flags;
     delete groups.flags;
@@ -93,14 +93,14 @@ function isInt(n) {
     return n % 1 === 0;
 }
 
-console.log(format(12.1234, '% 7.5f'));
-console.log(format(12.1234, '%.4s'));
-console.log(format(42, '%04x'));
-console.log(format(12, '%04o'));
-console.log(format(42.3456, '%#4.3x'));
-console.log(format(12, '%04d'));
-console.log(format(2.02, '%05f'));
-console.log(format(-2.3, '%05f'));
-console.log(format(2.02, '%+07f'));
-console.log(format(2.02, '%-05f'));
-console.log(format(2.02, '%- 7f'));
+// console.log(format(12.1234, '% 7.5f'));
+// console.log(format(12.1234, '%.4s'));
+// console.log(format(42, '%04x'));
+// console.log(format(12, '%04o'));
+// console.log(format(42.3456, '%#4.3x'));
+// console.log(format(12, '%04d'));
+// console.log(format(2.02, '%05f'));
+// console.log(format(-2.3, '%05f'));
+// console.log(format(2.02, '%+07f'));
+// console.log(format(2.02, '%-05f'));
+// console.log(format(2.02, '%- 7f'));
