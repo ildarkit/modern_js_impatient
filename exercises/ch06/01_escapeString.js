@@ -2,28 +2,20 @@ function replaceControl(match) {
     switch (match) {
         case '\t':
             return '\\t';
-            break;
         case '\n':
             return '\\n';
-            break;
         case '\b':
             return '\\b';
-            break;
         case '\r':
             return '\\r';
-            break;
         case '\f':
             return '\\f';
-            break;
         case '\v':
             return '\\v';
-            break;
         case '\\':
             return '\\\\';
-            break;
         case '\'':
             return '\\\'';
-            break;
     }
 }
 
@@ -39,4 +31,4 @@ function escape(str) {
     return '\'' + result + '\'';
 }
 
-console.log(escape('ascii\tне аски\v\n\f\r\nтекст\b🌍\\'));
+console.log(escape('ascii\t¿Cómo estás?\nне аски\v\n\f\r\nтекст\b🌍\\'));
