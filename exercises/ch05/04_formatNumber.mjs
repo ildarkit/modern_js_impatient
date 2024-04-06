@@ -52,7 +52,9 @@ function fmtString(num, cfg) {
 }
 
 function fmtNumber(num, cfg, altSystemForm = ALT_SYSTEM_FORM) {
-    let result = num.toPrecision(cfg.precise);
+    let result;
+    if (cfg.precise !== undefined) result = num.toFixed(cfg.precise);
+    else result = num.toString();
 
     if (cfg.numberSystem !== undefined) {
         let parseFunc = isInt(num) ? parseInt: parseFloat;
@@ -101,6 +103,6 @@ function isInt(n) {
 // console.log(format(12, '%04d'));
 // console.log(format(2.02, '%05f'));
 // console.log(format(-2.3, '%05f'));
-// console.log(format(2.02, '%+07f'));
+// console.log(format(2.07, '%+07.1f'));
 // console.log(format(2.02, '%-05f'));
 // console.log(format(2.02, '%- 7f'));
