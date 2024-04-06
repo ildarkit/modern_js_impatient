@@ -40,10 +40,6 @@ function config(groups, numSys, mapNumSys = NUM_SYSTEM) {
     return {...cfg, numberSystem: mapNumSys[numSys]};
 }
 
-function toNumberSystem(parseFunc, num, numberSystem) {
-    return parseFunc(num).toString(numberSystem);
-}
-
 function fmtString(num, cfg) {
     let result = num.toString(cfg.numberSystem);
     if (cfg.precise !== undefined)
@@ -53,13 +49,10 @@ function fmtString(num, cfg) {
 
 function fmtNumber(num, cfg, altSystemForm = ALT_SYSTEM_FORM) {
     let result;
-    if (cfg.precise !== undefined) result = num.toFixed(cfg.precise);
-    else result = num.toString();
+    if (cfg.precise !== undefined && cfg.numberSystem === undefined)
+        result = num.toFixed(cfg.precise);
+    else result = num.toString(cfg.numberSystem);
 
-    if (cfg.numberSystem !== undefined) {
-        let parseFunc = isInt(num) ? parseInt: parseFloat;
-        result = toNumberSystem(parseFunc, result, cfg.numberSystem);
-    }
     if ((cfg.format === 'f' || cfg.format === 'd') &&
         (cfg.flags.includes('+') && num > 0))
         result = '+' + result;
@@ -89,10 +82,6 @@ function fillString(numStr, cfg) {
     else 
         numStr = filled.join('') + numStr;          
     return numStr;
-}
-
-function isInt(n) {
-    return n % 1 === 0;
 }
 
 // console.log(format(12.1234, '% 7.5f'));
