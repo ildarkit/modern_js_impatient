@@ -51,12 +51,9 @@ function rangeHandler(start, end) {
 }
 
 function Range(start, end) {
-    if (new.target === undefined) {
-        const obj = {};
-        defineRangeProps(obj, start, end);
-        return new Proxy(obj, rangeHandler(start, end));
-    } else 
-        this.proxy = Range(start, end);
+    const obj = {};
+    defineRangeProps(obj, start, end);
+    this.proxy = new Proxy(obj, rangeHandler(start, end));
 };
 
 const range = new Range(10, 100);
