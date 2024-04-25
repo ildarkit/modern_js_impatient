@@ -1,5 +1,5 @@
-function defineRangeProps(targetObj, start, end) {
-    Object.defineProperties(targetObj, {
+function defineRangeProps(obj, start, end) {
+    Object.defineProperties(obj, {
         length: {
             value: end - start,
             writable: true,
@@ -7,12 +7,13 @@ function defineRangeProps(targetObj, start, end) {
         toString: {
             value: () => {
                 return Array
-                    .from({length: targetObj.length}, (v, i) => i + start)
+                    .from({length: obj.length}, (v, i) => i + start)
                     .join(',');
             },
             writable: true,
         }
     });
+    return obj;
 }
 
 function rangeHandler(start, end) {
@@ -51,13 +52,15 @@ function rangeHandler(start, end) {
 }
 
 function Range(start, end) {
-    const obj = {};
-    defineRangeProps(obj, start, end);
-    this.proxy = new Proxy(obj, rangeHandler(start, end));
+    if (start !== undefined && end !== undefined)
+        return new Proxy(
+            defineRangeProps(new Range(), start, end),
+            rangeHandler(start, end)
+        );
 };
 
 const range = new Range(10, 100);
 console.log(range instanceof Range);
-console.log(Object.keys(range.proxy));
-console.log(range.proxy.toString())
-console.log(range.proxy.length);
+console.log(Object.keys(range));
+console.log(range.toString())
+console.log(range.length);
